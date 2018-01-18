@@ -1,0 +1,33 @@
+{
+  "name": "chatastrophe",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:jasoncomes/react.git",
+  "author": "Jason Comes <jasonwcomes@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "node_modules/.bin/webpack",
+    "start": "node_modules/.bin/webpack-dev-server",
+    "prod": "node scripts/copy_assets.js && node_modules/.bin/webpack --config webpack.config.prod.js",
+    "deploy": "npm run prod && firebase deploy"
+  },
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.8",
+    "file-loader": "0.11.2",
+    "fs-extra": "^5.0.0",
+    "html-webpack-plugin": "^2.30.1",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-hot-loader": "3.0.0",
+    "react-router-dom": "4.2.2",
+    "style-loader": "^0.19.1",
+    "webpack": "3.5.4",
+    "webpack-dev-server": "^2.11.0",
+    "webpack-manifest-plugin": "^1.3.2"
+  }
+}
