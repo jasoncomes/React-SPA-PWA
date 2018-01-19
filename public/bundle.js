@@ -60,7 +60,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "b6cd0103236220f78b4f"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "716c90c59e68098a2ea8"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -9089,6 +9089,18 @@ var App = function (_Component) {
                 'div',
                 { id: 'container', className: 'inner-container' },
                 _react2.default.createElement(_reactRouterDom.Route, { path: '/login', component: _LoginContainer2.default }),
+                _react2.default.createElement(_reactRouterDom.Route, {
+                    exact: true,
+                    path: '/',
+                    render: function render() {
+                        return _react2.default.createElement(_ChatContainer2.default, {
+                            onSubmit: _this7.handleSubmitMessage,
+                            messages: _this7.state.messages,
+                            user: _this7.state.user,
+                            messagesLoaded: _this7.state.messagesLoaded
+                        });
+                    }
+                }),
                 _react2.default.createElement(_reactRouterDom.Route, {
                     path: '/users/:id',
                     render: function render(_ref2) {
