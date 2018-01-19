@@ -16,6 +16,7 @@ class App extends Component {
         messages: [],
         messagesLoaded: false
     }
+    deferredPrompt = null
 
 
     // Mount -> User State Change && Messages Value Change - Firebase Event Listeners.
@@ -41,6 +42,7 @@ class App extends Component {
             })
 
         this.listenForMessages()        
+        this.listenForInstallBanner()
     }
 
 
@@ -59,6 +61,15 @@ class App extends Component {
     }
 
 
+    // #mount -> Event Listener for Before Install Prompt then store it for later.
+    listenForInstallBanner = () => {
+        window.addEventListener('beforeinstallprompt', e => {
+            e.preventDefault()
+            this.deferredPrompt = e
+        })
+    }
+
+
     // #componentDidMount -> Ref Message Value Change -> Update Messages State.
     onMessage = snapshot => {
         const messages = Object.keys(snapshot.val()).map(key => {
@@ -71,7 +82,7 @@ class App extends Component {
     }
 
 
-    // @ChatContainer#onSubmit -> Update Firebase Database Ref `Messages/`
+    // @ChatContainer#onSubmit -> Update Firebase Database Ref `Messages/` & Prompt User to Install to home.
     handleSubmitMessage = msg => {
         const data = {
             msg,
@@ -84,6 +95,15 @@ class App extends Component {
             .database()
             .ref('messages/')
             .push(data)
+
+        if (this.deferredPrompt) {
+            this.deferredPrompt.prompt()
+
+            this.deferredPrompt.userChoice.then(choice => {
+                console.log(choice)
+            })
+            this.deferredPrompt = null
+        }
     }
 
 
