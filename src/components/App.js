@@ -1,11 +1,26 @@
 import React, { Component } from 'react'
 import { Route, withRouter } from 'react-router-dom'
+import AsyncComponent from './AsyncComponent'
 import Header from './Header'
-import LoginContainer from './LoginContainer'
-import ChatContainer from './ChatContainer'
-import UserContainer from './UserContainer'
 import NotificationResource from '../resources/NotificationResource'
 import './app.css'
+
+// Lazy Load Components based on Route
+const loadLogin = () => {
+    return import('./LoginContainer').then(module => module.default)
+}
+
+const loadChat = () => {
+    return import('./ChatContainer').then(module => module.default)
+}
+
+const loadUser = () => {
+    return import('./UserContainer').then(module => module.default)
+}
+
+const LoginContainer = AsyncComponent(loadLogin)
+const ChatContainer = AsyncComponent(loadChat)
+const UserContainer = AsyncComponent(loadUser)
 
 
 class App extends Component {
