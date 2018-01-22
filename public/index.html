@@ -1,62 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="utf-8">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="/assets/icon.png">
-    <link rel="manifest" href="/manifest.json">
-    <title>Chatastrophe</title>
 
-    <!-- IOS Startup/Splash Images -->
-    <link href="https://placehold.it/1536x2008" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" rel="apple-touch-startup-image">
-    <link href="https://placehold.it/1496x2048" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" rel="apple-touch-startup-image">
-    <link href="https://placehold.it/768x1004" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 1) and (orientation: portrait)" rel="apple-touch-startup-image">
-    <link href="https://placehold.it/748x1024" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 1) and (orientation: landscape)" rel="apple-touch-startup-image">
-    <link href="https://placehold.it/1242x2148" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" rel="apple-touch-startup-image">
-    <link href="https://placehold.it/1182x2208" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" rel="apple-touch-startup-image">
-    <link href="https://placehold.it/750x1294" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image"> 
-    <link href="https://placehold.it/640x1096" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image"> 
-    <link href="https://placehold.it/640x920" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image"> 
-    <link href="https://placehold.it/320x460" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="/assets/icon.png">
+  <link rel="manifest" href="/manifest.json">
+  <title>Chatastrophe</title>
 
-  </head>
-  <body>
-    <div id="root"></div>
-    <script src="/secrets.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
-    <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: window.apiKey,
-            authDomain: "chatastrophe-e25ee.firebaseapp.com",
-            databaseURL: "https://chatastrophe-e25ee.firebaseio.com",
-            projectId: "chatastrophe-e25ee",
-            storageBucket: "",
-            messagingSenderId: window.messagingSenderId
-        };
-        window.firebase = firebase;
-        firebase.initializeApp(config);
-    </script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker
-                    .register('firebase-messaging-sw.js')
-                    .then(function(registration) {
-                        console.log('Registered!');
-                    }, function(err) {
-                        console.log('ServiceWorker registration failed: ', err);
-                    })
-                    .catch(function(err){
-                        console.log(err);
-                    })
-            });
-        } else {
-            console.log('Service Worker is not supported');
-        }
-    </script>
-    </body>
+  <!-- App Shell Pattern Styles -->
+  <style>
+  body {
+    height: 100vh;
+    background: linear-gradient(to bottom, #FD8271, #A62824);
+    font-family: 'Khula', sans-serif;
+    color: #2f2f2f;
+    overflow: hidden;
+    margin: 0 8px;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  #root {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  #container {
+    max-width: 500px;
+    background-color: white;
+    border-radius: 10px;
+    height: 90%;
+    padding: 10px;
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6);
+    flex: 1;
+  }
+
+  #Header {
+    width: 100%;
+    height: 50px;
+  }
+
+  #Header img {
+    width: 35px;
+    height: 35px;
+    float: left;
+  }
+
+  #Header button.red {
+    float: right;
+    margin-top: 5px;
+  }
+
+  #Header h1 {
+    display: inline-block;
+    float: left;
+    margin-left: 10px;
+    font-size: 1.1em;
+    margin-top: 7px;
+  }
+
+  #ChatContainer {
+    position: relative;
+    padding-bottom: 50px;
+  }
+
+  .inner-container {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  #loading-container {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #loading-container img,
+  #test-image {
+    width: 100px;
+    -webkit-animation-name: pulse;
+    animation-name: pulse;
+    animation-duration: 1000ms;
+    transform-origin: 70% 70%;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  @-webkit-keyframes pulse {
+    0% {
+      -webkit-transform: scale(1);
+    }
+    50% {
+      -webkit-transform: scale(1.2);
+    }
+    100% {
+      -webkit-transform: scale(1);
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  </style>
+
+  <!-- IOS Startup/Splash Images -->
+  <link href="https://placehold.it/1536x2008" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" rel="apple-touch-startup-image">
+  <link href="https://placehold.it/1496x2048" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" rel="apple-touch-startup-image">
+  <link href="https://placehold.it/768x1004" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 1) and (orientation: portrait)" rel="apple-touch-startup-image">
+  <link href="https://placehold.it/748x1024" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 1) and (orientation: landscape)" rel="apple-touch-startup-image">
+  <link href="https://placehold.it/1242x2148" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" rel="apple-touch-startup-image">
+  <link href="https://placehold.it/1182x2208" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" rel="apple-touch-startup-image">
+  <link href="https://placehold.it/750x1294" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+  <link href="https://placehold.it/640x1096" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+  <link href="https://placehold.it/640x920" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+  <link href="https://placehold.it/320x460" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 1)" rel="apple-touch-startup-image">
+
+</head>
+
+<body>
+  <div id="root">
+    <div id="container">
+      <div class="inner-container">
+        <div id="Header">
+          <img src="/assets/icon.png" alt="logo" />
+          <h1>Chatastrophe</h1>
+        </div>
+        <div id="loading-container">
+          <img src="/assets/icon.png" alt="logo" id="loader" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/secrets.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: window.apiKey,
+      authDomain: "chatastrophe-e25ee.firebaseapp.com",
+      databaseURL: "https://chatastrophe-e25ee.firebaseio.com",
+      projectId: "chatastrophe-e25ee",
+      storageBucket: "",
+      messagingSenderId: window.messagingSenderId
+    };
+    window.firebase = firebase;
+    firebase.initializeApp(config);
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker
+        .register('firebase-messaging-sw.js')
+        .then(function(registration) {
+          console.log('Registered!');
+        }, function(err) {
+          console.log('ServiceWorker registration failed: ', err);
+        })
+        .catch(function(err) {
+          console.log(err);
+        })
+      });
+    } else {
+      console.log('Service Worker is not supported');
+    }
+  </script>
+
+</body>
 </html>

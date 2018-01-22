@@ -6,12 +6,12 @@ module.exports = {
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:8080',
     'webpack/hot/only-dev-server',
-    __dirname + "/src/index.js"
+    __dirname + '/src/index.js'
   ],
   output: {
-    path: __dirname + "/public",
-    filename: "bundle.js",
-    publicPath: "/",
+    path: __dirname + '/public',
+    filename: 'bundle.js',
+    publicPath: '/',
   },
   module: {
     loaders: [
@@ -27,8 +27,8 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          { loader: "style-loader" },
-          { loader: "css-loader" }
+          { loader: 'style-loader' },
+          { loader: 'css-loader' }
         ]
       }
     ]
@@ -41,7 +41,7 @@ module.exports = {
     })
   ],
   devServer: {
-    contentBase: "./public",
+    contentBase: './public',
     historyApiFallback: true,
     inline: true,
     hot: true
