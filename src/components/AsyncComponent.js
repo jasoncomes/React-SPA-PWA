@@ -8,6 +8,8 @@ export default function asyncComponent(getComponent) {
             Component: null
         }
 
+
+        // Only Load when Component is about to mount.
         componentWillMount() {
             if (!this.state.Component) {
                 getComponent().then(Component => {
@@ -16,7 +18,7 @@ export default function asyncComponent(getComponent) {
             }
         }
 
-
+        
         render() {
             const { Component } = this.state
 
